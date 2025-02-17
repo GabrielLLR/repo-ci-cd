@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  validate:
+  PB33F:
     runs-on: ubuntu-latest
     steps:
       - name: Instalar Dependências do Go
@@ -15,4 +15,4 @@ jobs:
 
       - name: Rodar PB33F e gerar relatório
         run: |
-          go run rules/validator.go temp_swagger.yaml > pb33f_report.txt 2>&1 || true
+          go run rules/validator.go swagger.yaml > pb33f_report.txt 2>&1 || true

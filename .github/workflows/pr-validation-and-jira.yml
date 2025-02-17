@@ -8,19 +8,27 @@ on:
         type: string
 
 jobs:
-  prepare-swagger:
+  download-swagger:
     runs-on: ubuntu-latest
     steps:
-      - name: Criar arquivo temporário `temp_swagger.yaml`
+      - name: Baixar Swagger.yaml do Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: swagger-file
+          path: .
+
+      - name: Verificar o Arquivo
         run: |
-          echo "${{ github.event.inputs.SWAGGER_FILE }}" | base64 -d > temp_swagger.yaml
-          echo "Arquivo `temp_swagger.yaml` criado com sucesso!"
-      
-      - name: Exibir conteúdo do arquivo (debug)
-        run: cat temp_swagger.yaml
+          if [ -f "swagger.yaml" ]; then
+            echo "Swagger.yaml baixado com sucesso!"
+            cat swagger.yaml
+          else
+            echo "Erro: Arquivo Swagger.yaml não encontrado!"
+            exit 1
+          fi
 
   PB33F:
-    needs: prepare-swagger
+    needs: download-swagger
     uses: ./.github/workflows/pb33f.yaml
 
   spectral:

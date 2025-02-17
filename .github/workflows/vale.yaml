@@ -15,4 +15,4 @@ jobs:
           sudo mv vale /usr/local/bin/
 
       - name: Rodar Vale
-        run: vale --config=rules/.vale.ini temp_swagger.yaml > vale_report.txt 2>&1 || true
+        run: vale --config=rules/.vale.ini swagger.yaml > vale_report.txt 2>&1 || true
