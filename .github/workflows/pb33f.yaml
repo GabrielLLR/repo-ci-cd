@@ -7,6 +7,9 @@ jobs:
   PB33F:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Instalar Dependências do Go
         run: |
           go mod init validator || true

@@ -20,9 +20,6 @@ jobs:
   download-swagger:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      
       - name: Baixar Swagger.yaml do PR
         run: |
           curl -L -o swagger.yaml "${{ github.event.inputs.SWAGGER_FILE_URL }}"

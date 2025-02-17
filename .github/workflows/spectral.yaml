@@ -7,6 +7,9 @@ jobs:
   spectral:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Instalar Spectral
         run: npm install -g @stoplight/spectral-cli
 
