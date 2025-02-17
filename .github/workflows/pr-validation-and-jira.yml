@@ -2,10 +2,6 @@ name: Validate PR and Create Jira Task
 
 on:
   workflow_call:
-    inputs:
-      SWAGGER_FILE:
-        required: true
-        type: string
     secrets:
       JIRA_URL:
         required: true
