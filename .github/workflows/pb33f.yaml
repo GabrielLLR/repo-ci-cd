@@ -9,7 +9,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
+      - name: Download swagger
+        uses: actions/download-artifact@v4
+        with:
+          name: swagger
+
       - name: Instalar Dependências do Go
         run: |
           go mod init validator || true

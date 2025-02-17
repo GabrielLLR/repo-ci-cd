@@ -34,7 +34,11 @@ jobs:
             echo "Erro: Arquivo Swagger.yaml não encontrado!"
             exit 1
           fi
-
+      - name: Upload spectral_report
+        uses: actions/upload-artifact@v4
+        with:
+          name: swagger
+          path: swagger.yaml
   PB33F:
     needs: download-swagger
     uses: ./.github/workflows/pb33f.yaml
