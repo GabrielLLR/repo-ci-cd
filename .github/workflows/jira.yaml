@@ -34,15 +34,41 @@ jobs:
           fi
           echo "✅ Todas as secrets obrigatórias estão definidas."
 
-      - name: Baixar relatórios
+      - name: Download pb33f_report
         uses: actions/download-artifact@v4
         with:
-          path: reports
+          name: pb33f_report
 
-      - name: Listar arquivos baixados
+      - name: Download spectral_report
+        uses: actions/download-artifact@v4
+        with:
+          name: spectral_report
+
+      - name: Download vale_report
+        uses: actions/download-artifact@v4
+        with:
+          name: vale_report
+        
+      - name: Listar todos os arquivos do repositório
         run: |
-          echo "📂 Listando arquivos baixados:" 
-          ls -R reports
+          echo "📂 Listando arquivos do repositório:"
+          ls -R > repo_files.txt
+          cat repo_files.txt
+
+      - name: Ler arquivos de relatório
+        run: |
+          DESCRIPTION="Revisão do PR: ${{ inputs.PR_TITLE }}. Link do PR: ${{ inputs.PR_URL }} Criado por: ${{ inputs.PR_AUTHOR }}"
+
+          for FILE in spectral_report.txt vale_report.txt pb33f_report.txt; do
+            if [[ -f "$FILE" ]]; then
+              echo "📄 Arquivo encontrado: $FILE"
+              CONTENT=$(cat "$FILE")
+              DESCRIPTION+="\n\n### Conteúdo de $FILE:\n\n$CONTENT"
+            else
+              echo "⚠️ Arquivo não encontrado: $FILE"
+            fi
+          done
+          echo "$DESCRIPTION" > description.txt
 
       - name: Criar Task no Jira
         id: create-jira-task
@@ -53,17 +79,23 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
+          DESCRIPTION=$(jq -Rs '.' < description.txt)
+
           ISSUE_PAYLOAD=$(jq -n \
             --arg project "$JIRA_PROJECT" \
             --arg summary "Revisão do PR: ${{ inputs.PR_TITLE }}" \
-            --arg description "Revisão do PR: ${{ inputs.PR_TITLE }}.\nLink do PR: ${{ inputs.PR_URL }}.\nCriado por: ${{ inputs.PR_AUTHOR }}" \
+            --arg description "$DESCRIPTION" \
             --arg issuetype "$JIRA_ISSUE_TYPE" \
-            '{ fields: { project: { key: $project }, summary: $summary, description: $description, issuetype: { name: $issuetype } } }')
+            '{ fields: { project: { key: $project }, summary: $summary, description: $description | fromjson, issuetype: { name: $issuetype } } }')
 
           echo "📝 Criando issue no Jira..."
+          echo "Payload enviado: $ISSUE_PAYLOAD"
+
           RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
             -u "$JIRA_USER:$JIRA_API_TOKEN" \
             --data "$ISSUE_PAYLOAD" "$JIRA_URL/rest/api/2/issue/")
+
+          echo "Resposta da API: $RESPONSE"
 
           ISSUE_ID=$(echo "$RESPONSE" | jq -r '.id')
           ISSUE_KEY=$(echo "$RESPONSE" | jq -r '.key')
@@ -77,22 +109,6 @@ jobs:
           echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
           echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
 
-      - name: Anexar Relatórios à Task no Jira
-        env:
-          JIRA_URL: ${{ secrets.JIRA_URL }}
-          JIRA_USER: ${{ secrets.JIRA_USER }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        run: |
-          for FILE in reports/*; do
-            if [[ -f "$FILE" ]]; then
-              echo "📎 Anexando $FILE à issue $JIRA_ISSUE_KEY"
-              curl -s -X POST -H "X-Atlassian-Token: no-check" \
-                -H "Content-Type: multipart/form-data" \
-                -u "$JIRA_USER:$JIRA_API_TOKEN" \
-                -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_KEY/attachments"
-            fi
-          done
-
       - name: Mudar status da Task para "Em Andamento"
         env:
           JIRA_URL: ${{ secrets.JIRA_URL }}
@@ -100,7 +116,12 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
           echo "🔄 Executando transição para 'Em Andamento' com ID 31..."
-          
+
+          if [[ -z "$JIRA_URL" || -z "$JIRA_ISSUE_ID" ]]; then
+            echo "❌ ERRO: Parâmetros faltando!"
+            exit 1
+          fi
+
           TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
 
           TRANSITION_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
