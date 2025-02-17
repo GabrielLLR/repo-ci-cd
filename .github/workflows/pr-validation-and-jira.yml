@@ -2,16 +2,19 @@ name: Validate PR and Create Jira Task
 
 on:
   workflow_dispatch:
+    inputs:
+      SWAGGER_FILE_URL:
+        required: true
+        type: string
 
 jobs:
   download-swagger:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar Swagger.yaml do Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: swagger-file
-          path: .
+      - name: Baixar Swagger.yaml do PR
+        run: |
+          curl -L -o swagger.yaml "${{ github.event.inputs.SWAGGER_FILE_URL }}"
+          ls -lh swagger.yaml || exit 1
 
       - name: Verificar o Arquivo
         run: |
