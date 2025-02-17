@@ -2,6 +2,16 @@ name: Validate PR and Create Jira Task
 
 on:
   workflow_call:
+    secrets:
+      JIRA_URL:
+        required: true
+      JIRA_USER:
+        required: true
+      JIRA_API_TOKEN:
+        required: true
+      JIRA_PROJECT:
+        required: true
+
  
 jobs:
   checkout:
@@ -15,6 +25,7 @@ jobs:
           fetch-depth: 0
 
   PB33F:
+    needs: checkout
     uses: ./.github/workflows/pb33f.yaml
 
   spectral:
