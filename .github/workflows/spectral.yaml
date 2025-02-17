@@ -11,4 +11,4 @@ jobs:
         run: npm install -g @stoplight/spectral-cli
 
       - name: Rodar Spectral
-        run: spectral lint swagger.yaml --ruleset rules/spectral_rules.yaml > spectral_report.txt 2>&1 || true
+        run: spectral lint temp_swagger.yaml --ruleset rules/spectral_rules.yaml > spectral_report.txt 2>&1 || true

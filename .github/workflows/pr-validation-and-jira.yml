@@ -8,27 +8,24 @@ on:
         type: string
 
 jobs:
-  checkout:
+  prepare-swagger:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código do PR
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
+      - name: Criar arquivo temporário `temp_swagger.yaml`
+        run: |
+          echo "${{ github.event.inputs.SWAGGER_FILE }}" | base64 -d > temp_swagger.yaml
+          echo "Arquivo `temp_swagger.yaml` criado com sucesso!"
+      
+      - name: Exibir conteúdo do arquivo (debug)
+        run: cat temp_swagger.yaml
 
   PB33F:
-    needs: checkout
+    needs: prepare-swagger
     uses: ./.github/workflows/pb33f.yaml
-    with:
-      SWAGGER_FILE: ${{ inputs.SWAGGER_FILE }}
 
   spectral:
     needs: PB33F
     uses: ./.github/workflows/spectral.yaml
-    with:
-      SWAGGER_FILE: ${{ inputs.SWAGGER_FILE }}
 
   vale:
     needs: spectral
