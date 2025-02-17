@@ -1,17 +1,12 @@
 name: Validate PR and Create Jira Task
 
 on:
-  workflow_call:
-    secrets:
-      JIRA_URL:
+  workflow_dispatch:
+    inputs:
+      SWAGGER_FILE:
         required: true
-      JIRA_USER:
-        required: true
-      JIRA_API_TOKEN:
-        required: true
-      JIRA_PROJECT:
-        required: true
- 
+        type: string
+
 jobs:
   checkout:
     runs-on: ubuntu-latest
@@ -26,10 +21,14 @@ jobs:
   PB33F:
     needs: checkout
     uses: ./.github/workflows/pb33f.yaml
+    with:
+      SWAGGER_FILE: ${{ inputs.SWAGGER_FILE }}
 
   spectral:
     needs: PB33F
     uses: ./.github/workflows/spectral.yaml
+    with:
+      SWAGGER_FILE: ${{ inputs.SWAGGER_FILE }}
 
   vale:
     needs: spectral
@@ -43,5 +42,3 @@ jobs:
       JIRA_USER: ${{ secrets.JIRA_USER }}
       JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
       JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
-  
-  
