@@ -1,0 +1,107 @@
+name: Jira Task Creation
+
+on:
+  workflow_call:
+    secrets:
+      JIRA_URL:
+        required: true
+      JIRA_USER:
+        required: true
+      JIRA_API_TOKEN:
+        required: true
+      JIRA_PROJECT:
+        required: true
+
+jobs:
+  jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar Secrets Necessárias
+        run: |
+          if [[ -z "${{ secrets.JIRA_URL }}" || -z "${{ secrets.JIRA_USER }}" || -z "${{ secrets.JIRA_API_TOKEN }}" || -z "${{ secrets.JIRA_PROJECT }}" ]]; then
+            echo "❌ Uma ou mais secrets obrigatórias não estão definidas."
+            exit 1
+          fi
+          echo "✅ Todas as secrets obrigatórias estão definidas."
+
+      - name: Criar Task no Jira
+        id: create-jira-task
+        env:
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_USER: ${{ secrets.JIRA_USER }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
+          JIRA_ISSUE_TYPE: "Task"
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+
+          DESCRIPTION=$(jq -Rs '.' <<< "Revisão do PR: $PR_TITLE. Link do PR: $PR_URL Criado por: $PR_AUTHOR")
+
+          ISSUE_PAYLOAD=$(jq -n \
+            --arg project "$JIRA_PROJECT" \
+            --arg summary "Revisão do PR: $PR_TITLE" \
+            --arg description "$DESCRIPTION" \
+            --arg issuetype "$JIRA_ISSUE_TYPE" \
+            '{ fields: { project: { key: $project }, summary: $summary, description: $description | fromjson, issuetype: { name: $issuetype } } }')
+
+          echo "📝 Criando issue no Jira..."
+          echo "Payload enviado: $ISSUE_PAYLOAD"
+
+          RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+            -u "$JIRA_USER:$JIRA_API_TOKEN" \
+            --data "$ISSUE_PAYLOAD" "$JIRA_URL/rest/api/2/issue/")
+
+          echo "Resposta da API: $RESPONSE"
+
+          ISSUE_ID=$(echo "$RESPONSE" | jq -r '.id')
+          ISSUE_KEY=$(echo "$RESPONSE" | jq -r '.key')
+
+          if [[ "$ISSUE_ID" == "null" || -z "$ISSUE_ID" ]]; then
+            echo "❌ Erro ao criar issue no Jira!"
+            exit 1
+          fi
+
+          echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
+          echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
+          echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
+
+      - name: Mudar status da Task para "Em Andamento"
+        env:
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_USER: ${{ secrets.JIRA_USER }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          echo "🔄 Executando transição para 'Em Andamento' com ID 31..."
+          echo "JIRA_URL: '$JIRA_URL'"
+          echo "JIRA_ISSUE_ID: '$JIRA_ISSUE_ID'"
+
+          if [[ -z "$JIRA_URL" ]]; then
+            echo "❌ ERRO: JIRA_URL não está definido!"
+            exit 1
+          fi
+
+          if [[ -z "$JIRA_ISSUE_ID" ]]; then
+            echo "❌ ERRO: JIRA_ISSUE_ID não está definido!"
+            exit 1
+          fi
+
+          TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
+          echo "Payload enviado: $TRANSITION_PAYLOAD"
+
+          set -x  # Ativar debug
+          TRANSITION_RESPONSE=$(curl -v -X POST -H "Content-Type: application/json" \
+            -u "$JIRA_USER:$JIRA_API_TOKEN" \
+            --data "$TRANSITION_PAYLOAD" \
+            "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/transitions")
+          set +x  # Desativar debug
+
+          echo "Resposta da API (Transição): $TRANSITION_RESPONSE"
+
+          if [[ "$TRANSITION_RESPONSE" == *"errorMessages"* ]]; then
+            echo "❌ Erro ao atualizar status da Task!"
+            exit 1
+          fi
+
+          echo "✅ Status da Task atualizado para 'Em Andamento'."

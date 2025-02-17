@@ -1,0 +1,7 @@
+extends: spelling
+message: "A palavra '%s' pode estar escrita incorretamente."
+level: warning
+source:
+  - vale: "Vale"
+  - Openapi: "OpenAPI"
+  - swagger: "Swagger"

@@ -1,0 +1,21 @@
+name: Spectral Validation
+
+on:
+  workflow_call:
+    inputs:
+      SWAGGER_FILE:
+        required: true
+        type: string
+      RULES_FILE:
+        required: true
+        type: string
+
+jobs:
+  spectral:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Spectral
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: Rodar Spectral
+        run: spectral lint ${{ inputs.SWAGGER_FILE }} --ruleset ${{ inputs.RULES_FILE }} > spectral_report.txt 2>&1 || true

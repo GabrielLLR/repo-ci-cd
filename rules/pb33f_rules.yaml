@@ -1,0 +1,23 @@
+rules:
+  enforce-security:
+    description: "Todas as APIs devem ter um esquema de segurança (JWT, OAuth, API Key)."
+    severity: error
+    given: "$.components.securitySchemes"
+    then:
+      function: truthy
+
+  require-contact-info:
+    description: "A seção 'info' deve incluir detalhes de contato."
+    severity: warning
+    given: "$.info.contact"
+    then:
+      function: truthy
+
+  only-https:
+    description: "As URLs dos servidores devem ser HTTPS."
+    severity: error
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"

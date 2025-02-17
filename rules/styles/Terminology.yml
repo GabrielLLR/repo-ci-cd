@@ -1,0 +1,6 @@
+extends: existence
+message: "Use 'API' em vez de 'Api'."
+level: error
+ignorecase: true
+tokens:
+  - 'Api'

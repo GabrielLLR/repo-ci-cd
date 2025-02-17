@@ -1,0 +1,57 @@
+extends: "spectral:oas"
+
+rules:
+  info-title:
+    description: "O campo `info.title` deve estar presente e ser uma string não vazia"
+    severity: error
+    given: "$.info.title"
+    then:
+      function: truthy
+
+  info-description:
+    description: "O campo `info.description` deve estar presente e fornecer um resumo da API"
+    severity: warn
+    given: "$.info.description"
+    then:
+      function: truthy
+
+  info-version:
+    description: "O campo `info.version` deve estar presente e seguir um formato de versão semântica"
+    severity: error
+    given: "$.info.version"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\\d+\\.\\d+\\.\\d+)$"
+
+  paths-kebab-case:
+    description: "Os caminhos da API devem estar em kebab-case (exemplo: `/minha-api`)"
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(?:/[a-z0-9]+(?:-[a-z0-9]+)*)+$"
+
+  operation-operationId:
+    description: "Cada operação deve ter um campo `operationId` único"
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: operationId
+      function: truthy
+
+  operation-tags:
+    description: "Cada operação deve ter ao menos um `tag` definido"
+    severity: warn
+    given: "$.paths[*][*]"
+    then:
+      field: tags
+      function: truthy
+
+  openapi-tags:
+    description: "A API deve definir ao menos uma tag na raiz"
+    severity: error
+    given: "$.tags"
+    then:
+      function: truthy

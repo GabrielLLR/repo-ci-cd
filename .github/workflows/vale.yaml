@@ -1,0 +1,25 @@
+name: Vale CLI Validation
+
+on:
+  workflow_call:
+    inputs:
+      TEXT_FILES_PATH:
+        required: true
+        type: string
+      VALE_CONFIG:
+        required: true
+        type: string
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Vale CLI
+        run: |
+          VALE_VERSION=$(curl -s https://api.github.com/repos/errata-ai/vale/releases/latest | jq -r .tag_name)
+          curl -L -o vale.tar.gz "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_${VALE_VERSION:1}_Linux_64-bit.tar.gz"
+          tar -xzf vale.tar.gz
+          sudo mv vale /usr/local/bin/
+
+      - name: Rodar Vale
+        run: vale --config=${{ inputs.VALE_CONFIG }} ${{ inputs.TEXT_FILES_PATH }} > vale_report.txt 2>&1 || true

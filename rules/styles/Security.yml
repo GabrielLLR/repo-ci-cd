@@ -1,0 +1,7 @@
+extends: existence
+message: "Evite expor credenciais no código."
+level: error
+tokens:
+  - '(?i)password\s*='
+  - '(?i)secret\s*='
+  - '(?i)token\s*='

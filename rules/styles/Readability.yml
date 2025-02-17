@@ -1,0 +1,4 @@
+extends: readability
+message: "Frase muito longa detectada."
+level: warning
+max: 30
