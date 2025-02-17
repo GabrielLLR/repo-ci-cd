@@ -2,10 +2,6 @@ name: Validate PR with PB33F
 
 on:
   workflow_call:
-    inputs:
-      SWAGGER_FILE:
-        required: true
-        type: string
 
 jobs:
   validate:
@@ -19,4 +15,4 @@ jobs:
 
       - name: Rodar PB33F e gerar relatório
         run: |
-          go run rules/validator.go ${{ inputs.SWAGGER_FILE }} > pb33f_report.txt 2>&1 || true
+          go run rules/validator.go swagger.yaml > pb33f_report.txt 2>&1 || true

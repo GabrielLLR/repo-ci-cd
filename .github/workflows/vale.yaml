@@ -2,13 +2,6 @@ name: Vale CLI Validation
 
 on:
   workflow_call:
-    inputs:
-      TEXT_FILES_PATH:
-        required: true
-        type: string
-      VALE_CONFIG:
-        required: true
-        type: string
 
 jobs:
   vale:
@@ -22,4 +15,4 @@ jobs:
           sudo mv vale /usr/local/bin/
 
       - name: Rodar Vale
-        run: vale --config=${{ inputs.VALE_CONFIG }} ${{ inputs.TEXT_FILES_PATH }} > vale_report.txt 2>&1 || true
+        run: vale --config=rules/.vale.ini swagger.yaml > vale_report.txt 2>&1 || true
