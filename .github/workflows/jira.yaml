@@ -34,6 +34,12 @@ jobs:
           fi
           echo "✅ Todas as secrets obrigatórias estão definidas."
 
+      - name: Listar todos os arquivos do repositório
+        run: |
+          echo "📂 Listando arquivos do repositório:"
+          ls -R > repo_files.txt
+          cat repo_files.txt
+
       - name: Ler arquivos de relatório
         run: |
           DESCRIPTION="Revisão do PR: ${{ inputs.PR_TITLE }}. Link do PR: ${{ inputs.PR_URL }} Criado por: ${{ inputs.PR_AUTHOR }}"
