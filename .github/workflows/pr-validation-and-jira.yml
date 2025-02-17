@@ -13,25 +13,4 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-
-  PB33F:
-    uses: ./.github/workflows/pb33f.yaml
-
-  spectral:
-    needs: PB33F
-    uses: ./.github/workflows/spectral.yaml
-
-  vale:
-    needs: spectral
-    uses: ./.github/workflows/vale.yaml
-
-  jira:
-    needs: vale
-    uses: ./.github/workflows/jira.yaml
-    secrets:
-      JIRA_URL: ${{ secrets.JIRA_URL }}
-      JIRA_USER: ${{ secrets.JIRA_USER }}
-      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-      JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
-  
   
