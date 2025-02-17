@@ -47,7 +47,7 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
         run: |
-          EXISTING_ISSUE=$(curl -s -u "$JIRA_USER:$JIRA_API_TOKEN" \
+          EXISTING_ISSUE=$(curl -u "$JIRA_USER:$JIRA_API_TOKEN" \
             -X GET "$JIRA_URL/rest/api/2/search?jql=project=$JIRA_PROJECT+AND+summary~\"Revisão do PR: ${{ inputs.PR_TITLE }}\"&maxResults=1")
           
           ISSUE_ID=$(echo "$EXISTING_ISSUE" | jq -r '.issues[0].id')
@@ -79,7 +79,7 @@ jobs:
               --arg issuetype "$JIRA_ISSUE_TYPE" \
               '{ fields: { project: { key: $project }, summary: $summary, description: $description, issuetype: { name: $issuetype } } }')
 
-            RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+            RESPONSE=$(curl -X POST -H "Content-Type: application/json" \
               -u "$JIRA_USER:$JIRA_API_TOKEN" \
               --data "$ISSUE_PAYLOAD" "$JIRA_URL/rest/api/2/issue/")
 
@@ -97,7 +97,7 @@ jobs:
           for FILE in reports/*; do
             if [[ -f "$FILE" ]]; then
               echo "📎 Anexando $FILE à Task $JIRA_ISSUE_ID"
-              curl -s -X POST -H "X-Atlassian-Token: no-check" \
+              curl -X POST -H "X-Atlassian-Token: no-check" \
                 -H "Authorization: Basic $(echo -n "$JIRA_USER:$JIRA_API_TOKEN" | base64)" \
                 -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments"
             fi
@@ -114,7 +114,7 @@ jobs:
 
           TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
 
-          TRANSITION_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+          TRANSITION_RESPONSE=$(curl -X POST -H "Content-Type: application/json" \
             -u "$JIRA_USER:$JIRA_API_TOKEN" \
             --data "$TRANSITION_PAYLOAD" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/transitions")
 
