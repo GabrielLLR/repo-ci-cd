@@ -6,6 +6,15 @@ on:
       SWAGGER_FILE_URL:
         required: true
         type: string
+      PR_TITLE:
+        required: true
+        type: string
+      PR_URL:
+        required: true
+        type: string
+      PR_AUTHOR:
+        required: true
+        type: string
 
 jobs:
   download-swagger:
@@ -41,6 +50,10 @@ jobs:
   jira:
     needs: vale
     uses: ./.github/workflows/jira.yaml
+    with:
+      PR_TITLE: ${{ inputs.PR_TITLE }}
+      PR_URL: ${{ inputs.PR_URL }}
+      PR_AUTHOR: ${{ inputs.PR_AUTHOR }}
     secrets:
       JIRA_URL: ${{ secrets.JIRA_URL }}
       JIRA_USER: ${{ secrets.JIRA_USER }}

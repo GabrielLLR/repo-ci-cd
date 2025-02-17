@@ -11,6 +11,16 @@ on:
         required: true
       JIRA_PROJECT:
         required: true
+    inputs:
+      PR_TITLE:
+        required: true
+        type: string
+      PR_URL:
+        required: true
+        type: string
+      PR_AUTHOR:
+        required: true
+        type: string
 
 jobs:
   jira:
@@ -33,9 +43,9 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_URL="${{ github.event.pull_request.html_url }}"
-          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_TITLE="${{ inputs.PR_TITLE }}"
+          PR_URL="${{ inputs.PR_URL }}"
+          PR_AUTHOR="${{ inputs.PR_AUTHOR }}"
 
           DESCRIPTION=$(jq -Rs '.' <<< "Revisão do PR: $PR_TITLE. Link do PR: $PR_URL Criado por: $PR_AUTHOR")
 
