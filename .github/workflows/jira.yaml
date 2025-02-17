@@ -34,6 +34,21 @@ jobs:
           fi
           echo "✅ Todas as secrets obrigatórias estão definidas."
 
+      - name: Ler arquivos de relatório
+        run: |
+          DESCRIPTION="Revisão do PR: ${{ inputs.PR_TITLE }}. Link do PR: ${{ inputs.PR_URL }} Criado por: ${{ inputs.PR_AUTHOR }}"
+
+          for FILE in spectral_report.txt vale_report.txt pb33f_report.txt; do
+            if [[ -f "$FILE" ]]; then
+              echo "📄 Arquivo encontrado: $FILE"
+              CONTENT=$(cat "$FILE")
+              DESCRIPTION+="\n\n### Conteúdo de $FILE:\n\n$CONTENT"
+            else
+              echo "⚠️ Arquivo não encontrado: $FILE"
+            fi
+          done
+          echo "$DESCRIPTION" > description.txt
+
       - name: Criar Task no Jira
         id: create-jira-task
         env:
@@ -43,15 +58,11 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
-          PR_TITLE="${{ inputs.PR_TITLE }}"
-          PR_URL="${{ inputs.PR_URL }}"
-          PR_AUTHOR="${{ inputs.PR_AUTHOR }}"
-
-          DESCRIPTION=$(jq -Rs '.' <<< "Revisão do PR: $PR_TITLE. Link do PR: $PR_URL Criado por: $PR_AUTHOR")
+          DESCRIPTION=$(jq -Rs '.' < description.txt)
 
           ISSUE_PAYLOAD=$(jq -n \
             --arg project "$JIRA_PROJECT" \
-            --arg summary "Revisão do PR: $PR_TITLE" \
+            --arg summary "Revisão do PR: ${{ inputs.PR_TITLE }}" \
             --arg description "$DESCRIPTION" \
             --arg issuetype "$JIRA_ISSUE_TYPE" \
             '{ fields: { project: { key: $project }, summary: $summary, description: $description | fromjson, issuetype: { name: $issuetype } } }')
@@ -77,35 +88,6 @@ jobs:
           echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
           echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
 
-      - name: Criar Arquivos de Relatório (Simulação)
-        run: |
-          echo "Este é o relatório do Spectral" > spectral_report.txt
-          echo "Este é o relatório do Vale" > vale_report.txt
-          echo "Este é o relatório do PB33F" > pb33f_report.txt
-
-      - name: Anexar Relatórios ao Jira Task
-        env:
-          JIRA_URL: ${{ secrets.JIRA_URL }}
-          JIRA_USER: ${{ secrets.JIRA_USER }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          JIRA_ISSUE_ID: ${{ env.JIRA_ISSUE_ID }}
-        run: |
-          echo "📎 Anexando relatórios à issue $JIRA_ISSUE_ID"
-
-          for file in spectral_report.txt vale_report.txt pb33f_report.txt; do
-            if [[ -f "$file" ]]; then
-              echo "📎 Anexando $file..."
-              curl -X POST -H "X-Atlassian-Token: no-check" \
-                   -H "Authorization: Basic $(echo -n "$JIRA_USER:$JIRA_API_TOKEN" | base64)" \
-                   -H "Content-Type: multipart/form-data" \
-                   -F "file=@$file" \
-                   "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments"
-              echo "✅ $file anexado com sucesso!"
-            else
-              echo "⚠️ Arquivo $file não encontrado, pulando..."
-            fi
-          done
-
       - name: Mudar status da Task para "Em Andamento"
         env:
           JIRA_URL: ${{ secrets.JIRA_URL }}
@@ -113,12 +95,20 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
           echo "🔄 Executando transição para 'Em Andamento' com ID 31..."
+
+          if [[ -z "$JIRA_URL" || -z "$JIRA_ISSUE_ID" ]]; then
+            echo "❌ ERRO: Parâmetros faltando!"
+            exit 1
+          fi
+
           TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
 
           TRANSITION_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
             -u "$JIRA_USER:$JIRA_API_TOKEN" \
             --data "$TRANSITION_PAYLOAD" \
             "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/transitions")
+
+          echo "Resposta da API (Transição): $TRANSITION_RESPONSE"
 
           if [[ "$TRANSITION_RESPONSE" == *"errorMessages"* ]]; then
             echo "❌ Erro ao atualizar status da Task!"
