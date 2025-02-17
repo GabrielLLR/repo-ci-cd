@@ -39,29 +39,13 @@ jobs:
         with:
           path: reports
 
-      - name: Verificar se a Task já existe
-        id: check-jira-task
-        env:
-          JIRA_URL: ${{ secrets.JIRA_URL }}
-          JIRA_USER: ${{ secrets.JIRA_USER }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
+      - name: Listar arquivos baixados
         run: |
-          EXISTING_ISSUE=$(curl -u "$JIRA_USER:$JIRA_API_TOKEN" \
-            -X GET "$JIRA_URL/rest/api/2/search?jql=project=$JIRA_PROJECT+AND+summary~\"Revisão do PR: ${{ inputs.PR_TITLE }}\"&maxResults=1")
-          
-          ISSUE_ID=$(echo "$EXISTING_ISSUE" | jq -r '.issues[0].id')
-          
-          if [[ "$ISSUE_ID" != "null" && -n "$ISSUE_ID" ]]; then
-            echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
-            echo "✅ Task existente encontrada: $ISSUE_ID"
-          else
-            echo "JIRA_ISSUE_ID=" >> $GITHUB_ENV
-            echo "⚠️ Nenhuma Task existente encontrada, será criada uma nova."
-          fi
+          echo "📂 Listando arquivos baixados:" 
+          ls -R reports
 
-      - name: Criar ou Atualizar Task no Jira
-        id: jira-task
+      - name: Criar Task no Jira
+        id: create-jira-task
         env:
           JIRA_URL: ${{ secrets.JIRA_URL }}
           JIRA_USER: ${{ secrets.JIRA_USER }}
@@ -69,26 +53,31 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
-          if [[ -n "$JIRA_ISSUE_ID" ]]; then
-            echo "🔄 Atualizando Task existente: $JIRA_ISSUE_ID"
-          else
-            ISSUE_PAYLOAD=$(jq -n \
-              --arg project "$JIRA_PROJECT" \
-              --arg summary "Revisão do PR: ${{ inputs.PR_TITLE }}" \
-              --arg description "Revisão do PR: ${{ inputs.PR_TITLE }}. Link: ${{ inputs.PR_URL }} Criado por: ${{ inputs.PR_AUTHOR }}" \
-              --arg issuetype "$JIRA_ISSUE_TYPE" \
-              '{ fields: { project: { key: $project }, summary: $summary, description: $description, issuetype: { name: $issuetype } } }')
+          ISSUE_PAYLOAD=$(jq -n \
+            --arg project "$JIRA_PROJECT" \
+            --arg summary "Revisão do PR: ${{ inputs.PR_TITLE }}" \
+            --arg description "Revisão do PR: ${{ inputs.PR_TITLE }}.\nLink do PR: ${{ inputs.PR_URL }}.\nCriado por: ${{ inputs.PR_AUTHOR }}" \
+            --arg issuetype "$JIRA_ISSUE_TYPE" \
+            '{ fields: { project: { key: $project }, summary: $summary, description: $description, issuetype: { name: $issuetype } } }')
 
-            RESPONSE=$(curl -X POST -H "Content-Type: application/json" \
-              -u "$JIRA_USER:$JIRA_API_TOKEN" \
-              --data "$ISSUE_PAYLOAD" "$JIRA_URL/rest/api/2/issue/")
+          echo "📝 Criando issue no Jira..."
+          RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
+            -u "$JIRA_USER:$JIRA_API_TOKEN" \
+            --data "$ISSUE_PAYLOAD" "$JIRA_URL/rest/api/2/issue/")
 
-            ISSUE_ID=$(echo "$RESPONSE" | jq -r '.id')
-            echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
-            echo "✅ Nova Task criada: $ISSUE_ID"
+          ISSUE_ID=$(echo "$RESPONSE" | jq -r '.id')
+          ISSUE_KEY=$(echo "$RESPONSE" | jq -r '.key')
+
+          if [[ "$ISSUE_ID" == "null" || -z "$ISSUE_ID" ]]; then
+            echo "❌ Erro ao criar issue no Jira!"
+            exit 1
           fi
 
-      - name: Anexar Relatórios à Task
+          echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
+          echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
+          echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
+
+      - name: Anexar Relatórios à Task no Jira
         env:
           JIRA_URL: ${{ secrets.JIRA_URL }}
           JIRA_USER: ${{ secrets.JIRA_USER }}
@@ -96,13 +85,13 @@ jobs:
         run: |
           for FILE in reports/*; do
             if [[ -f "$FILE" ]]; then
-              echo "📎 Anexando $FILE à Task $JIRA_ISSUE_ID"
-              curl -X POST -H "X-Atlassian-Token: no-check" \
-                -H "Authorization: Basic $(echo -n "$JIRA_USER:$JIRA_API_TOKEN" | base64)" \
-                -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments"
+              echo "📎 Anexando $FILE à issue $JIRA_ISSUE_KEY"
+              curl -s -X POST -H "X-Atlassian-Token: no-check" \
+                -H "Content-Type: multipart/form-data" \
+                -u "$JIRA_USER:$JIRA_API_TOKEN" \
+                -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_KEY/attachments"
             fi
           done
-          echo "✅ Todos os anexos foram adicionados à Task."
 
       - name: Mudar status da Task para "Em Andamento"
         env:
@@ -110,13 +99,14 @@ jobs:
           JIRA_USER: ${{ secrets.JIRA_USER }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
-          echo "🔄 Alterando status da Task $JIRA_ISSUE_ID para 'Em Andamento' (ID 31)..."
-
+          echo "🔄 Executando transição para 'Em Andamento' com ID 31..."
+          
           TRANSITION_PAYLOAD='{"transition": {"id": "31"}}'
 
-          TRANSITION_RESPONSE=$(curl -X POST -H "Content-Type: application/json" \
+          TRANSITION_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
             -u "$JIRA_USER:$JIRA_API_TOKEN" \
-            --data "$TRANSITION_PAYLOAD" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/transitions")
+            --data "$TRANSITION_PAYLOAD" \
+            "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/transitions")
 
           echo "Resposta da API (Transição): $TRANSITION_RESPONSE"
 
