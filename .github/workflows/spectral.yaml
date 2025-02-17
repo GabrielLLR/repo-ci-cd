@@ -16,3 +16,10 @@ jobs:
       - name: Mostrar caminho do arquivo gerado
         run: |
           echo "Relatório gerado em: $(realpath spectral_report.txt)"
+      
+      - name: Upload spectral_report
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectral_report
+          path: spectral_report.txt
+        

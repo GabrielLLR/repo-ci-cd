@@ -16,3 +16,9 @@ jobs:
       - name: Rodar PB33F e gerar relatório
         run: |
           go run rules/validator.go swagger.yaml > pb33f_report.txt 2>&1 || true
+
+      - name: Upload pb33f_report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pb33f_report
+          path: pb33f_report.txt

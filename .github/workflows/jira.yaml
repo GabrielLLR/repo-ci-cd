@@ -34,6 +34,21 @@ jobs:
           fi
           echo "✅ Todas as secrets obrigatórias estão definidas."
 
+      - name: Download pb33f_report
+        uses: actions/download-artifact@v4
+        with:
+          name: pb33f_report
+
+      - name: Download spectral_report
+        uses: actions/download-artifact@v4
+        with:
+          name: spectral_report
+
+      - name: Download vale_report
+        uses: actions/download-artifact@v4
+        with:
+          name: vale_report
+        
       - name: Listar todos os arquivos do repositório
         run: |
           echo "📂 Listando arquivos do repositório:"
