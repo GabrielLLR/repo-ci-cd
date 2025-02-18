@@ -79,12 +79,12 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
-          DESCRIPTION=$(jq -Rs '.' < description.txt | jq -r)
+          DESCRIPTION=$(cat description.txt | jq -Rs '.')
 
           ISSUE_PAYLOAD=$(jq -n \
             --arg project "$JIRA_PROJECT" \
             --arg summary "Revisão do PR: ${{ inputs.PR_TITLE }}" \
-            --argjson description "$DESCRIPTION" \
+            --arg description "$DESCRIPTION" \
             --arg issuetype "$JIRA_ISSUE_TYPE" \
             '{ fields: { project: { key: $project }, summary: $summary, description: $description | fromjson, issuetype: { name: $issuetype } } }')
 
