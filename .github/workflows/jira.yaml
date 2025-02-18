@@ -86,13 +86,17 @@ jobs:
           for FILE in reports/*; do
             if [[ -f "$FILE" ]]; then
               echo "📎 Anexando arquivo: $FILE"
-              curl -s -X POST -H "X-Atlassian-Token: no-check" \
+              RESPONSE=$(curl -s -X POST -H "X-Atlassian-Token: no-check" \
                 -H "Authorization: Basic $(echo -n "$JIRA_USER:$JIRA_API_TOKEN" | base64)" \
                 -F "file=@$FILE" \
-                "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments"
+                "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments" --verbose)
+
+              echo "Resposta da API: $RESPONSE"
+            else
+              echo "⚠️ Arquivo não encontrado: $FILE"
             fi
           done
-          echo "✅ Arquivos anexados com sucesso."
+          echo "✅ Processo de anexação concluído."
 
       - name: Mudar status da Task para "Em Andamento"
         env:
