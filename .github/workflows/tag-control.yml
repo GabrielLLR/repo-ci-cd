@@ -15,6 +15,9 @@ on:
       title:
         description: "Swagger Title"
         required: true
+      pr_number:
+        description: "Pull Request Number"
+        required: true
 
 jobs:
   update-tag:
@@ -22,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Print received information
         run: |
@@ -30,6 +33,15 @@ jobs:
           echo "Branch: ${{ inputs.branch }}"
           echo "Swagger Version: ${{ inputs.version }}"
           echo "Swagger Title: ${{ inputs.title }}"
+          echo "Pull Request Number: ${{ inputs.pr_number }}"
+
+      - name: Get latest commit SHA from PR
+        id: get_pr_sha
+        run: |
+          PR_SHA=$(curl -s -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
+            "https://api.github.com/repos/${{ inputs.repository }}/pulls/${{ inputs.pr_number }}" | jq -r .merge_commit_sha)
+          echo "PR_SHA=$PR_SHA" >> $GITHUB_ENV
+          echo "Latest commit SHA from PR: $PR_SHA"
 
       - name: Remove existing tag (if exists) via API
         run: |
@@ -43,12 +55,9 @@ jobs:
 
       - name: Create new tag via API
         run: |
-          SHA=$(curl -s -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
-          "https://api.github.com/repos/${{ inputs.repository }}/git/ref/heads/${{ inputs.branch }}" | jq -r .object.sha)
-          
           curl -X POST -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d "{\"ref\": \"refs/tags/${{ inputs.version }}\", \"sha\": \"$SHA\"}" \
+          -d "{\"ref\": \"refs/tags/${{ inputs.version }}\", \"sha\": \"$PR_SHA\"}" \
           "https://api.github.com/repos/${{ inputs.repository }}/git/refs"
 
       - name: Print tag link
