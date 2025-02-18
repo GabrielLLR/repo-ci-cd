@@ -88,10 +88,11 @@ jobs:
           for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt; do
             if [[ -f "$FILE" ]]; then
               echo "📎 Anexando arquivo: $FILE"
-              RESPONSE=$(curl -X POST -H "X-Atlassian-Token: no-check" \
+              RESPONSE=$(curl -i -v -X POST -H "X-Atlassian-Token: no-check" \
+                -H "Content-Type: multipart/form-data" \
                 -H "Authorization: Basic $(echo -n "$JIRA_USER:$JIRA_API_TOKEN" | base64)" \
                 -F "file=@$FILE" \
-                "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments")
+                "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments" 2>&1)
 
               echo "Resposta da API: $RESPONSE"
             else
