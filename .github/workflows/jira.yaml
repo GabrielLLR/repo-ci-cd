@@ -21,6 +21,12 @@ on:
       PR_AUTHOR:
         required: true
         type: string
+permissions:
+  actions: write
+  contents: write  # Permite modificar arquivos no repositório
+  issues: write    # Permite criar e modificar issues
+  pull-requests: write  # Permite modificar PRs
+
 
 jobs:
   jira:
@@ -89,7 +95,6 @@ jobs:
         run: |
           ls -lah reports/
           ls -lah reports/spectral_report/
-          sudo chown -R $(whoami) reports/
           JIRA_ISSUE_ID=${{ steps.create-jira-task.outputs.JIRA_ISSUE_ID }}
           echo "ID: $JIRA_ISSUE_ID"
           echo "📂 Arquivos baixados:"
