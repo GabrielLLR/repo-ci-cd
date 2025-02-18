@@ -85,7 +85,7 @@ jobs:
         run: |
           echo "📂 Arquivos baixados:"
           ls -R reports
-          for FILE in reports/*.txt; do
+          for FILE in spectral_report.txt vale_report.txt pb33f_report.txt; do
             if [[ -f "$FILE" ]]; then
               echo "📎 Anexando arquivo: $FILE"
               RESPONSE=$(curl -s -X POST -H "X-Atlassian-Token: no-check" \
