@@ -87,7 +87,9 @@ jobs:
           JIRA_USER: ${{ secrets.JIRA_USER }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
-          sudo chmod -R 777 reports/
+          ls -lah reports/
+          ls -lah reports/spectral_report/
+          sudo chown -R $(whoami) reports/
           JIRA_ISSUE_ID=${{ steps.create-jira-task.outputs.JIRA_ISSUE_ID }}
           echo "ID: $JIRA_ISSUE_ID"
           echo "📂 Arquivos baixados:"
