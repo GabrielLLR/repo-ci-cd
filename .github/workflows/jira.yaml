@@ -86,27 +86,45 @@ jobs:
           
       - name: Anexar Relatórios à Task do Jira
         env:
-          JIRA_URL: ${{ secrets.JIRA_URL }}
-          JIRA_USER: ${{ secrets.JIRA_USER }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+            JIRA_URL: ${{ secrets.JIRA_URL }}
+            JIRA_USER: ${{ secrets.JIRA_USER }}
+            JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
-          ls -lah reports/
-          ls -lah reports/spectral_report/
-          JIRA_ISSUE_ID=${{ steps.create-jira-task.outputs.JIRA_ISSUE_ID }}
-          echo "ID: $JIRA_ISSUE_ID"
-          echo "📂 Arquivos baixados:"
-          ls -R reports
-          for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt; do
-            if [[ -f "$FILE" ]]; then
-              curl -v -i -X POST -H "X-Atlassian-Token: no-check" \
-                -H "Content-Type: multipart/form-data" \
-                -u "$JIRA_USER:$JIRA_API_TOKEN" \
-                -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY/attachments"
-            else
-              echo "⚠️ Arquivo não encontrado: $FILE"
-            fi
-          done
-          echo "✅ Processo de anexação concluído."
+            echo "🔍 Listando arquivos baixados antes do upload..."
+            ls -lah reports/ || echo "⚠️ Pasta 'reports/' não encontrada!"
+            ls -lah reports/spectral_report/ || echo "⚠️ Pasta 'spectral_report/' não encontrada!"
+            
+            JIRA_ISSUE_ID=${{ steps.create-jira-task.outputs.JIRA_ISSUE_ID }}
+            echo "📌 ID da Task do Jira: $JIRA_ISSUE_ID"
+        
+            echo "📂 Arquivos a serem anexados:"
+            ls -R reports/
+        
+            for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt; do
+              if [[ -f "$FILE" ]]; then
+                echo "📎 Tentando anexar arquivo: $FILE"
+        
+                RESPONSE=$(curl -X POST -H "X-Atlassian-Token: no-check" \
+                  -H "Content-Type: multipart/form-data" \
+                  -u "$JIRA_USER:$JIRA_API_TOKEN" \
+                  -F "file=@$FILE" "$JIRA_URL/rest/api/2/issue/$JIRA_ISSUE_ID/attachments" \
+                  -w "\n\nHTTP_STATUS:%{http_code}")
+        
+                echo "📄 Resposta do Jira:"
+                echo "$RESPONSE"
+        
+                HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | awk -F':' '{print $2}')
+                if [[ "$HTTP_STATUS" -ne 200 && "$HTTP_STATUS" -ne 201 ]]; then
+                  echo "❌ Erro no upload do arquivo: $FILE"
+                  exit 1
+                fi
+              else
+                echo "⚠️ Arquivo não encontrado: $FILE"
+              fi
+            done
+        
+            echo "✅ Processo de anexação concluído."
+        
 
       - name: Mudar status da Task para "Em Andamento"
         env:
