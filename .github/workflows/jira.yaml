@@ -82,10 +82,7 @@ jobs:
           echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
           echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
           echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
-          echo "::set-output name=JIRA_ISSUE_ID::$ISSUE_ID"
-
-      - name: Ajustar Permissões dos Arquivos
-        run: chmod -R 644 reports/        
+          echo "::set-output name=JIRA_ISSUE_ID::$ISSUE_ID" 
           
       - name: Anexar Relatórios à Task do Jira
         env:
