@@ -1,8 +1,20 @@
 name: Update Tag on PR Merge
 
 on:
-  repository_dispatch:
-    types: [update-tag]
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Repository name"
+        required: true
+      branch:
+        description: "Branch name"
+        required: true
+      version:
+        description: "Swagger Version"
+        required: true
+      title:
+        description: "Swagger Title"
+        required: true
 
 jobs:
   update-tag:
@@ -14,31 +26,31 @@ jobs:
 
       - name: Print received information
         run: |
-          echo "Repository: ${{ github.event.client_payload.repository }}"
-          echo "Branch: ${{ github.event.client_payload.branch }}"
-          echo "Swagger Version: ${{ github.event.client_payload.version }}"
-          echo "Swagger Title: ${{ github.event.client_payload.title }}"
+          echo "Repository: ${{ inputs.repository }}"
+          echo "Branch: ${{ inputs.branch }}"
+          echo "Swagger Version: ${{ inputs.version }}"
+          echo "Swagger Title: ${{ inputs.title }}"
 
       - name: Remove existing tag (if exists) via API
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.event.client_payload.repository }}/git/refs/tags/${{ github.event.client_payload.version }}")
+          "https://api.github.com/repos/${{ inputs.repository }}/git/refs/tags/${{ inputs.version }}")
           if [ "$RESPONSE" == "204" ]; then
-            echo "Tag ${{ github.event.client_payload.version }} removed successfully"
+            echo "Tag ${{ inputs.version }} removed successfully"
           else
-            echo "No existing tag ${{ github.event.client_payload.version }} to remove or failed request"
+            echo "No existing tag ${{ inputs.version }} to remove or failed request"
           fi
 
       - name: Create new tag via API
         run: |
           SHA=$(curl -s -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.event.client_payload.repository }}/git/ref/heads/${{ github.event.client_payload.branch }}" | jq -r .object.sha)
+          "https://api.github.com/repos/${{ inputs.repository }}/git/ref/heads/${{ inputs.branch }}" | jq -r .object.sha)
           
           curl -X POST -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d "{\"ref\": \"refs/tags/${{ github.event.client_payload.version }}\", \"sha\": \"$SHA\"}" \
-          "https://api.github.com/repos/${{ github.event.client_payload.repository }}/git/refs"
+          -d "{\"ref\": \"refs/tags/${{ inputs.version }}\", \"sha\": \"$SHA\"}" \
+          "https://api.github.com/repos/${{ inputs.repository }}/git/refs"
 
       - name: Print tag link
         run: |
-          echo "Tag created: https://github.com/${{ github.event.client_payload.repository }}/releases/tag/${{ github.event.client_payload.version }}"
+          echo "Tag created: https://github.com/${{ inputs.repository }}/releases/tag/${{ inputs.version }}"
