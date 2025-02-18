@@ -23,7 +23,7 @@ jobs:
           sudo mv vale /usr/local/bin/
 
       - name: Rodar Vale
-        run: vale --config=rules/.vale.ini swagger.yaml > vale_report.txt 2>&1 || true
+        run: vale --config=rules/.vale.ini --no-color swagger.yaml > vale_report.txt 2>&1 || true
 
       - name: Upload Vale
         uses: actions/upload-artifact@v4
