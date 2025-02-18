@@ -78,6 +78,9 @@ jobs:
           echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
           echo "::set-output name=JIRA_ISSUE_ID::$ISSUE_ID"
 
+      - name: Ajustar Permissões dos Arquivos
+        run: chmod -R 644 reports/        
+          
       - name: Anexar Relatórios à Task do Jira
         env:
           JIRA_URL: ${{ secrets.JIRA_URL }}
