@@ -76,6 +76,7 @@ jobs:
           echo "JIRA_ISSUE_ID=$ISSUE_ID" >> $GITHUB_ENV
           echo "JIRA_ISSUE_KEY=$ISSUE_KEY" >> $GITHUB_ENV
           echo "✅ Tarefa Jira criada: $ISSUE_KEY (ID: $ISSUE_ID)"
+          echo "::set-output name=JIRA_ISSUE_ID::$ISSUE_ID"
 
       - name: Anexar Relatórios à Task do Jira
         env:
@@ -83,6 +84,8 @@ jobs:
           JIRA_USER: ${{ secrets.JIRA_USER }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
+          JIRA_ISSUE_ID=${{ steps.create-jira-task.outputs.JIRA_ISSUE_ID }}
+          echo "ID: $JIRA_ISSUE_ID"
           echo "📂 Arquivos baixados:"
           ls -R reports
           for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt; do
