@@ -79,7 +79,7 @@ jobs:
           JIRA_PROJECT: ${{ secrets.JIRA_PROJECT }}
           JIRA_ISSUE_TYPE: "Task"
         run: |
-          DESCRIPTION=$(jq -Rs 'gsub("\\\\n"; "\n")' < description.txt)
+          DESCRIPTION=$(jq -Rs 'gsub("\\n\\n"; "\n") | gsub("\\u001b\\[[0-9;]+m"; "")' < description.txt)
 
           ISSUE_PAYLOAD=$(jq -n \
             --arg project "$JIRA_PROJECT" \
