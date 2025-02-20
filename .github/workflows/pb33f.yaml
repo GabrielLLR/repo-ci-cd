@@ -42,7 +42,7 @@ jobs:
 
       - name: Rodar o Open API Changes
         run: |
-          openapi-changes html-report oldSwagger.yaml swagger.yaml --output report.html
+          openapi-changes html-report oldSwagger.yaml swagger.yaml report.html
 
       - name: Upload pb33f_report
         uses: actions/upload-artifact@v4
