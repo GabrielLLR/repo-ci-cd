@@ -14,7 +14,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: swagger
-          
+
       - name: Download oldSwagger
         uses: actions/download-artifact@v4
         with:
@@ -26,6 +26,11 @@ jobs:
           go mod tidy
           go get github.com/pb33f/libopenapi
 
+      - name: Listar arquivos baixados
+        run: |
+          echo "📂 Arquivos baixados:"
+          ls -R
+
       - name: Rodar PB33F e gerar relatório
         run: |
           go run rules/validator.go oldSwagger.yaml swagger.yaml > pb33f_report.txt 2>&1 || true
@@ -35,6 +40,11 @@ jobs:
         with:
           name: pb33f_report
           path: pb33f_report.txt      
+      
+      - name: Listar arquivos baixados
+        run: |
+          echo "📂 Arquivos baixados:"
+          ls -R
 
       - name: Baixar o Open API Changes
         run: |
