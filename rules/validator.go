@@ -1,26 +1,47 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
 
 	"github.com/pb33f/libopenapi/index"
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
 	"gopkg.in/yaml.v3"
 )
 
-// Função para ler um arquivo local e retornar seu conteúdo como bytes
+// Função para converter para UTF-8
+func convertToUTF8(data []byte) ([]byte, error) {
+	utf8Bom := unicode.BOMOverride(transform.Nop) // Remove BOM se existir
+	reader := transform.NewReader(bytes.NewReader(data), utf8Bom)
+	convertedData, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao converter encoding para UTF-8: %v", err)
+	}
+	return convertedData, nil
+}
+
+// Função para ler um arquivo local, converter para UTF-8 e retornar os bytes
 func readFile(filePath string) ([]byte, error) {
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao ler o arquivo %s: %v", filePath, err)
 	}
-	return data, nil
+
+	// Converte para UTF-8 antes de processar
+	utf8Data, err := convertToUTF8(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return utf8Data, nil
 }
 
 // Função para resolver as referências OpenAPI usando o rolodex
 func resolveOpenAPI(inputFile, outputFile string) error {
-	// Ler o arquivo de entrada
+	// Ler o arquivo e converter para UTF-8
 	data, err := readFile(inputFile)
 	if err != nil {
 		return err
@@ -50,7 +71,7 @@ func resolveOpenAPI(inputFile, outputFile string) error {
 	rolodex.Resolve()
 
 	// Criar um YAML resolvido a partir do rolodex atualizado
-	resolvedYAML, err := yaml.Marshal(rootNode)
+	resolvedYAML, err := yaml.Marshal(&rootNode)
 	if err != nil {
 		return fmt.Errorf("erro ao converter para YAML: %v", err)
 	}
