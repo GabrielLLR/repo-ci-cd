@@ -23,7 +23,7 @@ jobs:
 
       - name: Rodar PB33F e gerar relatório
         run: |
-          go run rules/validator.go swagger.yaml > pb33f_report.txt 2>&1 || true
+          go run rules/validator.go oldSwagger.yaml swagger.yaml > pb33f_report.txt 2>&1 || true
 
       - name: Upload pb33f_report
         uses: actions/upload-artifact@v4
@@ -42,7 +42,7 @@ jobs:
 
       - name: Rodar o Open API Changes
         run: |
-          openapi-changes html-report oldSwagger.yaml swagger.yaml report.html
+          openapi-changes html-report oldSwaggerResolve.yaml swaggerResolve.yaml report.html
 
       - name: Upload pb33f_report
         uses: actions/upload-artifact@v4
