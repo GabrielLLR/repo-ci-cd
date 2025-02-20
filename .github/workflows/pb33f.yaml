@@ -14,6 +14,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: swagger
+          
+      - name: Download oldSwagger
+        uses: actions/download-artifact@v4
+        with:
+          name: oldSwagger
 
       - name: Instalar Dependências do Go
         run: |
@@ -29,12 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pb33f_report
-          path: pb33f_report.txt
-
-      - name: Download oldSwagger
-        uses: actions/download-artifact@v4
-        with:
-          name: oldSwagger
+          path: pb33f_report.txt      
 
       - name: Baixar o Open API Changes
         run: |
