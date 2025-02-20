@@ -100,7 +100,7 @@ jobs:
             echo "📂 Arquivos a serem anexados:"
             ls -R reports/
         
-            for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt; do
+            for FILE in reports/spectral_report/spectral_report.txt reports/vale_report/vale_report.txt reports/pb33f_report/pb33f_report.txt report.html; do
               if [[ -f "$FILE" ]]; then
                 echo "📎 Tentando anexar arquivo: $FILE"
         

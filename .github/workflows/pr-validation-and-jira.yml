@@ -6,6 +6,9 @@ on:
       SWAGGER_FILE_URL:
         required: true
         type: string
+      OLD_SWAGGER_FILE_URL:
+        required: true
+        type: string
       PR_TITLE:
         required: true
         type: string
@@ -28,7 +31,7 @@ jobs:
       - name: Verificar o Arquivo
         run: |
           if [ -f "swagger.yaml" ]; then
-            echo "Swagger.yaml baixado com sucesso!"
+            echo "swagger.yaml baixado com sucesso!"
             cat swagger.yaml
           else
             echo "Erro: Arquivo Swagger.yaml não encontrado!"
@@ -39,6 +42,27 @@ jobs:
         with:
           name: swagger
           path: swagger.yaml
+
+      - name: Baixar oldSwagger.yaml do PR
+        run: |
+          curl -L -o oldSwagger.yaml "${{ github.event.inputs.OLD_SWAGGER_FILE_URL }}"
+          ls -lh oldSwagger.yaml || exit 1
+  
+      - name: Verificar o Arquivo
+        run: |
+          if [ -f "oldSwagger.yaml" ]; then
+            echo "oldSwagger.yaml baixado com sucesso!"
+            cat oldSwagger.yaml
+          else
+            echo "Erro: Arquivo oldSwagger.yaml não encontrado!"
+            exit 1
+          fi
+      - name: Upload spectral_report
+        uses: actions/upload-artifact@v4
+        with:
+          name: oldSwagger
+          path: oldSwagger.yaml
+
   PB33F:
     needs: download-swagger
     uses: ./.github/workflows/pb33f.yaml

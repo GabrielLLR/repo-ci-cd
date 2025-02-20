@@ -31,10 +31,21 @@ jobs:
           name: pb33f_report
           path: pb33f_report.txt
 
+      - name: Download oldSwagger
+        uses: actions/download-artifact@v4
+        with:
+          name: oldSwagger
+
       - name: Baixar o Open API Changes
         run: |
           curl -fsSL https://pb33f.io/openapi-changes/install.sh | sh
 
-      - name: Baixar o Open API Changes
+      - name: Rodar o Open API Changes
         run: |
-          openapi-changes html-report ./swagger.yaml && open report.html
+          openapi-changes html-report --old oldSwagger.yaml --new swagger.yaml --output report.html
+
+      - name: Upload pb33f_report
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: report.html
