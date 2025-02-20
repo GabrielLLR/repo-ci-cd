@@ -30,3 +30,11 @@ jobs:
         with:
           name: pb33f_report
           path: pb33f_report.txt
+
+      - name: Baixar o Open API Changes
+        run: |
+          curl -fsSL https://pb33f.io/openapi-changes/install.sh | sh
+
+      - name: Baixar o Open API Changes
+        run: |
+          openapi-changes html-report ./swagger.yaml && open report.html
