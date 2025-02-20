@@ -30,7 +30,7 @@ jobs:
       - name: Rodar Vale
         run: |
           vale --config=rules/.vale.ini sync
-          vale --config=rules/.vale.ini ./swagger.yaml 2>&1 | sed 's/\x1B\[[0-9;]*[mK]//g' > vale_report.txt || true          
+          vale --config=rules/.vale.ini ./swagger.yaml --no-global 2>&1 | sed 's/\x1B\[[0-9;]*[mK]//g' > vale_report.txt || true          
 
       - name: Upload Vale
         uses: actions/upload-artifact@v4
