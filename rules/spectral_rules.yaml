@@ -55,3 +55,105 @@ rules:
     given: "$.tags"
     then:
       function: truthy
+
+  valid-required-defined-properties:
+    message: "{{error}}"
+    severity: error
+    given: 
+      - $..[?(@.type == 'object' && @.required)]
+    then:
+      function: "validatesWhetherMandatoryFieldsAreDefined"
+
+  pattern-found-NA:
+    description: Validação de uso de NA nos patterns.
+    message: "{{description}} Patthern: {{value}}, encontrado no {{path}}. No Open Finance Brasil é vetado o uso de nulos, de String vazias, “NA” ou valores que não se adequam ao domínio em questão"
+    severity: warn
+    given: "$.[*].pattern"
+    then:
+      function: pattern
+      functionOptions:
+       notMatch: NA
+
+  transaction-found-last:
+    description: Endpoint de transação, contém estrutura "last"
+    message: "{{description}} - {{path}}. Os Endpoints de transações, não devem conter a estrutura last"
+    severity: warn
+    given: "$.[*].TransactionsLinks.properties.last"
+    then:
+      function: falsy
+
+  pattern-found-regex:
+    description: Validação de uso da expressão regular "\w*\W*" nos patterns.
+    message: "{{description}} Patthern: {{value}}, encontrado no {{path}}. No Open Finance Brasil é vetado o uso da seguinte expressão regular “\w*\W*” nos patterns."
+    severity: err
+    given: "$.[*].pattern"
+    then:
+      function: pattern
+      functionOptions:
+       notMatch: \w*\W*
+
+  no-leading-trailing-spaces:
+    description: Campo tipo String não é permitido espaços antes ou depois do texto.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido espaços antes ou depois do texto'
+    given: "$..[?(@.type == 'string' && !@.enum)].value"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^\s.*\s$'
+      severity: error
+
+  string-should-has-maxLength:
+    description: Não permitir campos do tipo String que não tem o atributo maxLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo maxLength definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "maxLength"
+      function: truthy
+
+  string-should-has-minLength:
+    description: Não permitir campos do tipo String que não tem o atributo minLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo minLength definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "minLength"
+      function: truthy
+
+  no-maxLentgh-for-enum:
+    description: Objetos do tipo ENUM não devem ter o atributo maxLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não usamos o atributo maxLength em campos do tipo ENUM.'
+    severity: warn
+    given: "$.Request..[?(@.type == 'enum')]"
+    then:
+      field: "maxLenght"
+      function: falsy
+
+  string-should-has-pattern:
+    description: Não permitir campos do tipo String que não tem o atributo pattern definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo pattern definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "pattern"
+      function: truthy
+
+  array-objects-max-items:
+    description: "Arrays de objetos devem ter o atributo maxItems"
+    given: "$..*"
+    then:
+      field: "type"
+      function: pattern
+      functionOptions:
+        match: "array"
+      severity: error
+    and:
+      field: "items"
+      function: pattern
+      functionOptions:
+        match: "object"
+      severity: error
+    and:
+      field: "maxItems"
+      function: truthy
+      severity: error
