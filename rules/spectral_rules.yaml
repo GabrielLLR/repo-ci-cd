@@ -157,3 +157,111 @@ rules:
       field: "maxItems"
       function: truthy
       severity: error
+      
+  owasp-broken-object-level-authorization:
+    description: "Evitar acesso indevido a objetos com autorização fraca."
+    severity: error
+    given: "$.paths[*][*].parameters[?(@.in == 'path' || @.in == 'query')].name"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: ".*id.*"
+
+  owasp-broken-user-authentication:
+    description: "Garantir que endpoints sensíveis exijam autenticação forte."
+    severity: error
+    given: "$.paths[*][post, put, delete]"
+    then:
+      field: security
+      function: truthy
+
+  owasp-excessive-data-exposure:
+    description: "Evitar exposição excessiva de dados."
+    severity: error
+    given: "$.paths[*][get].responses[*].content[*].schema.properties"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          additionalProperties: false
+
+  owasp-lack-of-resources-rate-limiting:
+    description: "Verificar se os endpoints têm limitação de taxa."
+    severity: error
+    given: "$.paths[*][get, post, put, delete]"
+    then:
+      field: x-rate-limit
+      function: truthy
+
+  owasp-broken-function-level-authorization:
+    description: "Evitar escalonamento indevido de privilégios."
+    severity: error
+    given: "$.paths[*][post, put, delete]"
+    then:
+      field: security
+      function: truthy
+
+  owasp-mass-assignment:
+    description: "Evitar atribuições em massa de propriedades sensíveis."
+    severity: error
+    given: "$.components.schemas[*].properties"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          additionalProperties: false
+
+  owasp-security-misconfiguration:
+    description: "Evitar configurações de segurança fracas."
+    severity: error
+    given: "$.components.securitySchemes[*]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            type:
+              enum:
+                - apiKey
+                - http
+                - oauth2
+                - openIdConnect
+
+  owasp-injection:
+    description: "Prevenir ataques de injeção."
+    severity: error
+    given: "$.paths[*][*].parameters[*].schema"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            type:
+              enum:
+                - string
+                - integer
+                - boolean
+
+  owasp-improper-asset-management:
+    description: "Evitar endpoints obsoletos ou não documentados."
+    severity: error
+    given: "$.paths[*]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required:
+            - summary
+            - description
+
+  owasp-insufficient-logging-monitoring:
+    description: "Garantir monitoramento adequado para detecção de ataques."
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: x-monitoring
+      function: truthy
+
