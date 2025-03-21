@@ -1,0 +1,234 @@
+info-description
+paths-kebab-case
+operation-operationId
+info-title
+transaction-found-last
+objects-required-in-request-should-has-properties-request
+string-should-has-maxLength
+array-objects-max-items
+info-version
+pattern-found-NA
+objects-required-in-request-should-has-properties-response
+string-should-has-minLength
+pattern-found-texto
+no-leading-trailing-spaces
+string-should-has-pattern
+enforce-security
+require-contact-info
+
+only-https
+openapi-tags
+operation-tags
+no-maxLentgh-for-enum
+no-minLentgh-for-enum
+❌ Erro de validação: [warn] Endpoint de transação, contém estrutura "last"
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/teste - Objetos que são obrigatórios durante o envio da requisição devem ter o atributo "properties"
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/proxy - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/deviceId - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/osVersion - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/language - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/accountTenure - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/antennaInformation - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/deviceId - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/osVersion - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/language - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/accountTenure - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/antennaInformation - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/automatic/lastLoginDateTime - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/automatic/pixKeyRegistrationDateTime - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/proxy - Não permitir campos do tipo String que não tem o atributo maxLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejection/creditors - Arrays de objetos devem ter o atributo maxItems
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData - Arrays de objetos devem ter o atributo maxItems
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevocation/creditors - Arrays de objetos devem ter o atributo maxItems
+❌ Erro de validação: [warn] campo: #/components/schemas/Creditors - Arrays de objetos devem ter o atributo maxItems
+❌ Erro de validação: [error] O campo `info.version` deve estar presente e seguir um formato de versão semântica
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevokedReason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevocation/creditors/type/name - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevocation/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevocation/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/BusinessEntity/document/identification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/BusinessEntity/document/rel - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseErrorCreateConsent/errors/type/title - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseErrorCreateConsent/errors/type/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/cnpjInitiator - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/proxy - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/transactionIdentification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/deviceId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/osVersion - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/language - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/accountTenure - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/antennaInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/LinkSingle/self - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/Creditors/type/name - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/additionalInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/revocation/revokedAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/revocation/reason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RejectionReasonGet/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PixPaymentCancellation/cancelledAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PixPaymentCancellation/cancelledBy/document/identification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PixPaymentCancellation/cancelledBy/document/rel - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/additionalInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/revocation/revokedAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/revocation/reason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/deviceId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/osVersion - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/language - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/accountTenure - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/antennaInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/automatic/lastLoginDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/automatic/pixKeyRegistrationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringConsent/data/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringConsent/data/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringConsent/data/additionalInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PaymentPix/currency - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PatchPixPaymentData/cancellation/cancelledBy/document/identification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/PatchPixPaymentData/cancellation/cancelledBy/document/rel - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ImmediatePayment/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ImmediatePayment/currency - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ImmediatePayment/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/LoggedUser/document/identification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/LoggedUser/document/rel - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RejectionReason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/cnpjInitiator - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/transactionIdentification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejection/creditors/type/name - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejection/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejection/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/Rejection/rejectedAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/self - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/first - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/prev - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/next - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/last - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreateRecurringPaymentsPaymentId/errors/type/title - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreateRecurringPaymentsPaymentId/errors/type/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorRecurringConsents/errors/type/title - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorRecurringConsents/errors/type/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ContractDebtor/name - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ContractDebtor/document/identification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ContractDebtor/document/rel - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/transactionIdentification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/cnpjInitiator - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/proxy - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/transactionIdentification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejectionReason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/date - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/cnpjInitiator - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/remittanceInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/transactionIdentification - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/code - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/title - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/meta/requestDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/recurringConsentId - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/statusUpdateDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/startDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/creationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/expirationDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/additionalInformation - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/rejection/rejectedAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/revocation/revokedAt - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/revocation/reason/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreatePixRecurringPayment/errors/type/title - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreatePixRecurringPayment/errors/type/detail - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/Meta/requestDateTime - Não permitir campos do tipo String que não tem o atributo minLength definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/additionalInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponsePostRecurringConsent/data/revocation/reason/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/additionalInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsent/data/revocation/reason/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringConsent/data/additionalInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/RejectionReasonGet/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ImmediatePayment/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/RejectionReason/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataPatch/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejection/creditors/type/name - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreateRecurringPaymentsPaymentId/errors/type/title - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreateRecurringPaymentsPaymentId/errors/type/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ContractDebtor/name - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPixData/type/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsPostData/proxy - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRejectionReason/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorRecurringConsents/errors/type/title - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorRecurringConsents/errors/type/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringPaymentsDataRead/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/code - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/title - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/errors/type/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/additionalInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseRecurringConsentPatch/data/revocation/reason/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreatePixRecurringPayment/errors/type/title - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/422ResponseErrorCreatePixRecurringPayment/errors/type/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevocation/creditors/type/name - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseErrorCreateConsent/errors/type/title - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseErrorCreateConsent/errors/type/detail - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/remittanceInformation - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/CreateRecurringPixPaymentData/proxy - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/Creditors/type/name - Validação de uso da expressão regular "\w*\W*" nos patterns.
+❌ Erro de validação: [warn] campo: #/components/schemas/ResponseError/meta/requestDateTime - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/ConsentRevokedReason/detail - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/deviceId - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/osVersion - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/language - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/antennaInformation - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsConsents/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/deviceId - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/osVersion - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/userTimeZoneOffset - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/language - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/antennaInformation - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/appRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/RiskSignalsPayments/manual/integrity/deviceRecognitionVerdict - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/self - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/first - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/prev - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/next - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warn] campo: #/components/schemas/TransactionsLinks/last - Não permitir campos do tipo String que não tem o atributo pattern definido.
+❌ Erro de validação: [warning] A seção 'info' deve incluir detalhes de contato.
+❌ OpenAPI inválido: 1.0.0.yml
+exit status 1

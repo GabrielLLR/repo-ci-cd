@@ -21,3 +21,179 @@ rules:
       function: pattern
       functionOptions:
         match: "^https://"
+
+  info-title:
+    description: "O campo `info.title` deve estar presente e ser uma string não vazia"
+    severity: error
+    given: "$.info.title"
+    then:
+      function: truthy
+
+  info-description:
+    description: "O campo `info.description` deve estar presente e fornecer um resumo da API"
+    severity: warn
+    given: "$.info.description"
+    then:
+      function: truthy
+
+  info-version:
+    description: "O campo `info.version` deve estar presente e seguir um formato de versão semântica"
+    severity: error
+    given: "$.info.version"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\\d+\\.\\d+\\.\\d+)(?:-(rc|beta)\\.\\d+)?$"
+
+  paths-kebab-case:
+    description: "Os caminhos da API devem estar em kebab-case (exemplo: `/minha-api`)"
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(?:/[a-z0-9]+(?:-[a-z0-9]+)*)+$"
+
+  openapi-tags:
+    description: "A API deve definir ao menos uma tag na raiz"
+    severity: error
+    given: "$.tags"
+    then:
+      function: truthy
+      
+  operation-operationId:
+    description: "Cada operação deve ter um campo `operationId` único"
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: operationId
+      function: truthy
+
+  operation-tags:
+    description: "Cada operação deve ter ao menos um `tag` definido"
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: tags
+      function: truthy
+  
+  pattern-found-NA:
+    description: Validação de uso de NA nos patterns.
+    message: "{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil é vetado o uso de nulos, de String vazias, “NA” ou valores que não se adequam ao domínio em questão"
+    severity: warn
+    given: "$.[*].pattern"
+    then:
+      function: pattern
+      functionOptions:
+       notMatch: NA
+
+  pattern-found-texto:
+    description: Validação de uso da expressão regular "\w*\W*" nos patterns.
+    message: "{{description}} Patthern: {{value}}, encontrado no {{path}}. No Open Finance Brasil é vetado o uso da seguinte expressão regular nos patterns."
+    severity: warn
+    given: "$.[*].pattern"
+    then:
+      function: pattern
+      functionOptions:
+       notMatch: \w*\W*
+
+  transaction-found-last:
+    description: Endpoint de transação, contém estrutura "last"
+    message: "{{description}} - {{path}}. Os Endpoints de transações, não devem conter a estrutura last"
+    severity: warn
+    given: "$.[*].TransactionsLinks.properties.last"
+    then:
+      function: falsy
+  
+  no-leading-trailing-spaces:
+    description: Campo tipo String não é permitido espaços antes ou depois do texto.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido espaços antes ou depois do texto'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)].value"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^\s.*\s$'
+  
+  objects-required-in-request-should-has-properties-request:
+    description: Objetos que são obrigatórios durante o envio da requisição devem ter o atributo "properties"
+    message: '{{description}} Pattern: {{value}} No Open Finance Brasil, objetos que são obrigatórios durante o envio da requisição devem ter o atributo "properties"'
+    severity: warn
+    given: "$.Request..[?(@.type == 'object')]"
+    then:
+      field: "properties"
+      function: truthy
+
+  objects-required-in-request-should-has-properties-response:
+    description: Objetos que são obrigatórios durante o envio da requisição devem ter o atributo "properties"
+    message: '{{description}} Pattern: {{value}} No Open Finance Brasil, objetos que são obrigatórios durante o envio da requisição devem ter o atributo "properties"'
+    severity: warn
+    given: "$.Response..[?(@.type == 'object')]"
+    then:
+      field: "properties"
+      function: truthy
+
+  string-should-has-maxLength:
+    description: Não permitir campos do tipo String que não tem o atributo maxLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo maxLength definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "maxLength"
+      function: truthy
+
+  string-should-has-minLength:
+    description: Não permitir campos do tipo String que não tem o atributo minLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo minLength definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "minLength"
+      function: truthy
+
+  string-should-has-pattern:
+    description: Não permitir campos do tipo String que não tem o atributo pattern definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não é permitido campos do tipo String que não tenham o atributo pattern definido.'
+    severity: warn
+    given: "$..[?(@.type == 'string' && !@.enum)]"
+    then:
+      field: "pattern"
+      function: truthy
+  
+  no-maxLentgh-for-enum:
+    description: Objetos do tipo ENUM não devem ter o atributo maxLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não usamos o atributo maxLength em campos do tipo ENUM.'
+    severity: warn
+    given: "$.Request..[?(@.type == 'enum')]"
+    then:
+      field: "maxLenght"
+      function: falsy
+
+  no-minLentgh-for-enum:
+    description: Objetos do tipo ENUM não devem ter o atributo minLength definido.
+    message: '{{description}} Pattern: {{value}}, encontrado no {{path}}. No Open Finance Brasil não usamos o atributo minLength em campos do tipo ENUM.'
+    severity: warn
+    given: "$.Request..[?(@.type == 'enum')]"
+    then:
+      field: "minLength"
+      function: falsy
+
+  array-objects-max-items:
+    description: "Arrays de objetos devem ter o atributo maxItems"
+    severity: warn
+    given: "$..*"
+    then:
+      allOf:
+        - field: "type"
+          function: pattern
+          functionOptions:
+            match: "array"
+          severity: warn
+        - field: "items"
+          function: pattern
+          functionOptions:
+            match: "object"
+          severity: warn
+        - field: "maxItems"
+          function: truthy
+          severity: warn
